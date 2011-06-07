@@ -1,19 +1,108 @@
-Thank you for downloading the Magic Carpet plugin! In order to enable it, just drop the .jar file into your plugins folder in your CraftBukkit directory.
+Magic Carpet, by Android
+(fixes by jascotty2, Andrew, zand, and others)
+
+In order to enable it, just drop the .jar file into your plugins folder in your CraftBukkit directory.
 Then, just start your server like normal and enjoy!
 
-In order to use the magic carpet, type in the command /magiccarpet, or you can use /mc for short if you want. This will bring up a 5x5 area of glass underneath your feet
-that moves with you. Just put in the command again to remove it. However, you can now specify the size of the magic carpet! In order to do so, just put in either a 3, 5,
-or 7 after your /mc command. This will create either a 3x3, 5x5, or 7x7 carpet based on your input. When you put one of the sizes after the command when you already have a
-carpet out, if the size is the same as the carpet you have now, the carpet is removed. If it is different, the the carpet will change sizes. You can also use the MagicLight,
-which is a border of glowstone that surrounds the carpet. You use it by simply typing /ml. You can also switch between methods of going down by using /carpetswitch or /mcs.
+commands: 
+/magiccarpet, or /mc	This will bring up a 5x5 area of glass underneath your feet that moves with you. 
+				Just put in the command again to remove it. You can also specify the size of the magic carpet! 
+				In order to do so, just put in either a 3, 5, or 7 after your /mc command. 
+				If the size is the same as the carpet you have now, the carpet is removed. 
+/ml			MagicLight: a border of glowstone that surrounds the carpet. 
+/carpetswitch or /mcs	Switch between methods of going down (crouch / look down)
 
-This plugin creates a two files in its own folder in the plugin folder, one called "config.yml" and one called "magiccarpet.properties". The config file contains three properties
-you can edit; the ability to set crouch as the default method to go down, the ability to set the center block in the carpet to turn to glowstone when using Magic Light,
-and the ability to get permissions from the "magiccarpet.properties" file. On intialization, they are set to true, false, and false, respectively. You can change them as you wish.
-The properties file can be used to give permissions to users for the carpet, either by putting the names of the people you want to use the carpet after the "can-fly=", or change 
-it to "can't-fly=" and put those who you do not want to be able to use it.
+This plugin creates a two files in its own folder in the plugin folder, one called "config.yml" and one called "magiccarpet.properties". 
+The config file contains three properties you can edit; 
+the ability to set crouch as the default method to go down (default:true), 
+the ability to set the center block in the carpet to turn to glowstone when using Magic Light (default:false),
+and the ability to get permissions from the "magiccarpet.properties" file (default:false). 
+You can change them as you wish.
 
-Alternatively, you can use the Permissions plugin. In order to specify the magic carpet plugin in the config.yml file, type 'magiccarpet.mc' like that in single quotes after
-the permissions area where you are trying to apply it. If you want to use MagicLight while using Permissions, you must use the permissions node 'magiccarpet.ml'.
+The properties file can be used to give permissions to users for the carpet, 
+either by putting the names of the people you want to use the carpet after the "can-fly=", 
+or change it to "can't-fly=" and put those who you do not want to be able to use it.
 
-If you have any problems, don't hesitate to mention them at the bukkit forum thread for this plugin, or message my Bukkit account, Android, at the forums.
+Alternatively, you can use the Permissions plugin. 
+magiccarpet.mc		allow to use Magic Carpet
+magiccarpet.ml		allow to use MagicLight with Magic Carpet
+
+If you have any problems, don't hesitate to mention them at the bukkit forum thread for this plugin, 
+or message my Bukkit account, Android, at the forums.
+
+
+Changelog: 
+
+Version 1.5.6 - 6-7-11 - jascotty2
+general code organization & minor performance tweaks
+fixed reminent carpet if player kicked
+no longer kicked for flying while descending (console might still be spammed, though..)
+added ability to use any material for the carpet base
+fixed most ascending errors at ceilings
+
+
+Version 1.5.5
+MagicCarpet now removes itself automatically when it moves to an area without permissions.
+The admin can set how the MagicLight appears.
+
+
+Version 1.5.4
+The MagicLight now has a Permissions node.
+Glowstone from the MagicLight does not drop glowstone, no matter who breaks it.
+The admin can now set the default way to go down in a config file, as well as use this file to set up permissions without another plugin.'
+Edited the code so that the carpet does not last through transitions to another world where the user does not have permissions.
+
+
+Version 1.5.3
+User can switch between different ways to descend using /carpetswitch.
+Glowstone from the Magic Light no longer drops dust.
+carpet only redraws when the user has moved a block.
+
+
+Version 1.5.2
+Fixed an error in the Permissions set up
+Fixed an error in size changing
+
+
+Version 1.5.1
+Merged 1.2, 1.3, and 1.4 into one .jar
+Added Magic Light, a glowstone border to the carpet activated by the command /ml
+Updated to work with the newest recommended build.
+
+
+Versions 1.2.5, 1.3.5, 1.4.5
+Fixed the null pointer error.
+Users crouch to pull the carpet down now, instead of looking down.
+
+
+Versions 1.2.4, 1.3.4, 1.4.4
+Finally got rid of that pesky trail of glass bug!
+
+
+Versions 1.2.3, 1.3.3, 1.4.3
+Updated to work with the newest version of Bukkit.
+
+
+Versions 1.2.2, 1.3.2, 1.4.2
+Fixed the teleporting bug.
+
+
+Versions 1.2.1, 1.3.1, & 1.4.1
+Edited all of these versions to remove the constructor message, as well as simplifying the code a bit.
+
+
+Version 1.4
+Changed the plugin to work with Nijikokun's Permissions system.
+Fixed it so the plugin doesn't affect people's cactus buildings. Did this retroactively so it applies to all older versions
+
+
+Version 1.3
+Added a permissions system.
+
+Version 1.2
+Added the ability to change the size of the carpet.
+To move down, one must look straight down and move, instead of just looking straight down. Now you can look down at the scenery without plummeting.
+
+
+Version 1.1
+Fixed a few bugs (leaving behind carpets when warping, other commands not working with plugin). Much thanks to NordicBlue who pointed out a few of my coding errors!
