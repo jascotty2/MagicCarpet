@@ -33,6 +33,10 @@ or message my Bukkit account, Android, at the forums.
 
 Changelog: 
 
+Version 1.5.7 - ? - jascotty2
+if a carpet block is replaced with a different block, won't delete it
+
+
 Version 1.5.6 - 6-7-11 - jascotty2
 general code organization & minor performance tweaks
 fixed reminent carpet if player kicked

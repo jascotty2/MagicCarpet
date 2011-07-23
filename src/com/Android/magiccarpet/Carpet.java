@@ -44,23 +44,23 @@ public class Carpet {
     public Carpet(int size) {
         setSize(size);
     }
-    
+
     public Carpet(int size, boolean cent) {
         setSize(size);
         glowCenter = cent;
     }
-    
+
     public class CarpetFiber {
 
-        public CarpetFiber(int x, int y, int z, int type, boolean torch) {
+        public CarpetFiber(int x, int y, int z, int type/*, boolean torch*/) {
             this.x = x;
             this.y = y;
             this.z = z;
             this.type = type;
-            this.torch = torch;
+            //this.torch = torch;
         }
         int x, y, z, type = 0;
-        boolean torch = false;
+        //boolean torch = false;
         Block block = null;
     }
     public CarpetFiber[] fibers;
@@ -73,14 +73,14 @@ public class Carpet {
         }
         for (int i = 0; i < fibers.length; ++i) {
             bl = fibers[i].block;
-            if (fibers[i].block != null && (fibers[i].block.getType().equals(Material.GLASS) || fibers[i].block.getType().equals(Material.GLOWSTONE))) {
+            if (bl != null && bl.getTypeId() == fibers[i].type) {// && (fibers[i].block.getType().equals(Material.GLASS) || fibers[i].block.getType().equals(Material.GLOWSTONE))) {
                 bl.setType(Material.AIR);
             }
             fibers[i].block = null;
         }
     }
 
-    //Places glass in a 5x5 area underneath the player if the block was just air previously
+    //Places glass in an area underneath the player if the block was just air previously
     public void drawCarpet() {
         Block bl;
         if (currentBlock != null) {
@@ -93,21 +93,16 @@ public class Carpet {
                         && bl.getRelative(0, 0, 1).getTypeId() != 81) {
                     fibers[i].block = bl;
                     if (lights) {
-                        if (!glowCenter) {
-                            if (fibers[i].x == rad || fibers[i].x == -rad || fibers[i].z == rad || fibers[i].z == -rad) {
-                                bl.setType(Material.GLOWSTONE);
-                            } else {
-                                bl.setType(Material.GLASS);
-                            }
+                        if ((glowCenter && fibers[i].x == 0 && fibers[i].z == 0)
+                                || (!glowCenter && fibers[i].x == rad || fibers[i].x == -rad || fibers[i].z == rad || fibers[i].z == -rad)) {
+                            bl.setType(Material.GLOWSTONE);
                         } else {
-                            if (fibers[i].x == 0 && fibers[i].z == 0) {
-                                bl.setType(Material.GLOWSTONE);
-                            } else {
-                                bl.setType(Material.GLASS);
-                            }
+                            //bl.setType(Material.GLASS);
+                            bl.setTypeIdAndData(MagicCarpet.blockID, MagicCarpet.blockDat, false);
                         }
                     } else {
-                        bl.setType(Material.GLASS);
+                        // bl.setType(Material.GLASS);
+                        bl.setTypeIdAndData(MagicCarpet.blockID, MagicCarpet.blockDat, false);
                     }
                 } else {
                     fibers[i].block = null;
@@ -127,7 +122,7 @@ public class Carpet {
         drawCarpet();
     }
 
-    public boolean checkGlowstone(Block bl) {
+    public boolean checkCarpet(Block bl) {
         for (int i = 0; i < fibers.length; ++i) {
             Block fiber = fibers[i].block;
             if (fiber != null && fiber.equals(bl)) {
@@ -145,26 +140,14 @@ public class Carpet {
         this.size = size;
 
         fibers = new CarpetFiber[size * size];
-        switch (size) {
-            case 3:
-                size = 1;
-                break;
-            case 5:
-                size = 2;
-                break;
-            case 7:
-                size = 3;
-                break;
-            default:
-                size = 2;
-                break;
-        }
+
+        // if is even, should have a different for loop as well....
+        size = (size - (size % 2 == 0 ? 0 : 1)) / 2;
 
         int i = 0;
         for (int x = -size; x <= size; ++x) {
             for (int z = -size; z <= size; ++z) {
-                fibers[i] = new CarpetFiber(x, 0, z, 20, false);
-                ++i;
+                fibers[i++] = new CarpetFiber(x, 0, z, 20/*, false*/);
             }
         }
 

@@ -12,10 +12,11 @@ public class MagicBlockListener extends BlockListener {
     }
 
     @Override
-    //When glowstone from a carpet is broken, don't drop free dust
+    //When block from a carpet is broken, don't drop free dust
     public void onBlockBreak(BlockBreakEvent event) {
         for (Carpet carpet : carpets.getCarpets().values()) {
-            if (carpet != null && carpet.checkGlowstone(event.getBlock())) {
+            if (carpet != null && carpet.checkCarpet(event.getBlock())) {
+                event.setCancelled(true);
                 event.getBlock().setTypeId(0);
             }
         }

@@ -56,6 +56,8 @@ public class MagicCarpet extends JavaPlugin {
     private boolean all_can_fly = true;
     private boolean crouchDef = true;
     private boolean glowCenter = true;
+    protected static int blockID = 20;
+    protected static byte blockDat = 0;
 
     public void onEnable() {
         PluginDescriptionFile pdfFile = this.getDescription();
@@ -89,6 +91,15 @@ public class MagicCarpet extends JavaPlugin {
         all_can_fly = config.getBoolean("Use Properties Permissions", false);
         crouchDef = config.getBoolean("Crouch Default", true);
         glowCenter = config.getBoolean("Put glowstone for light in center", false);
+        blockID = config.getInt("Default Block Type", blockID);
+        blockDat = (byte) config.getInt("Default Block Type Data", blockID);
+
+        if (blockID >= 256 || blockID<=0 || org.bukkit.Material.getMaterial(blockID) == null) {
+            blockID = 20;
+            blockDat = 0;
+        } else if (blockDat > 15) {
+            blockDat = 0;
+        }
         saveConfig();
     }
 
@@ -96,6 +107,8 @@ public class MagicCarpet extends JavaPlugin {
         config.setProperty("Use Properties Permissions", all_can_fly);
         config.setProperty("Crouch Default", crouchDef);
         config.setProperty("Put glowstone for light in center", glowCenter);
+        config.setProperty("Default Block Type", blockID);
+        config.setProperty("Default Block Type Data", blockID);
         playerListener.crouchDef = crouchDef;
         config.save();
     }
@@ -117,7 +130,7 @@ public class MagicCarpet extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if(!(sender instanceof Player)){
+        if (!(sender instanceof Player)) {
             return true;
         }
         String[] split = args;
@@ -317,8 +330,8 @@ public class MagicCarpet extends JavaPlugin {
                 all_can_fly = true;
             } else {
                 log.info("Permission system not detected, defaulting to settings");
-                loadSettings();
             }
         }
+        loadSettings();
     }
 }

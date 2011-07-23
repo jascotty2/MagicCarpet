@@ -64,8 +64,8 @@ public class MagicPlayerListener extends PlayerListener {
         Carpet carpet = (Carpet) MagicCarpet.carpets.getCarpet(pl.getName());
         if (carpet != null) {
             String reas = event.getReason();
-            if (reas != null && reas.equals("Flying is not enabled on this server")
-                    && pl.isSneaking()) {
+            if (reas != null && reas.equals("Flying is not enabled on this server")) { // && pl.isSneaking()
+                // if useing mc, won't kick for flying
                 event.setCancelled(true);
             } else {
                 carpet.removeCarpet();
@@ -103,6 +103,9 @@ public class MagicPlayerListener extends PlayerListener {
             from.setZ(from.getZ() + .5);
         }
         //</andrew>
+
+        // ceiling fix
+        if(from.getY() < to.getY()) to.setY(to.getY() + .6);
 
         if (MagicCarpet.carpets.isDecsending(player, crouchDef)) {
             to.setY(to.getY() - 1);
