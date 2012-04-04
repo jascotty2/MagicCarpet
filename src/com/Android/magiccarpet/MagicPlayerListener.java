@@ -2,13 +2,16 @@ package com.Android.magiccarpet;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Magic Carpet 1.5
@@ -35,7 +38,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
  *
  * @author Android <spparr@gmail.com>
  */
-public class MagicPlayerListener extends PlayerListener {
+public class MagicPlayerListener implements Listener {
 
     private MagicCarpet plugin = null;
     boolean crouchDef = false;
@@ -44,21 +47,21 @@ public class MagicPlayerListener extends PlayerListener {
         plugin = plug;
     }
 
-    @Override
     //When a player joins the game, if they had a carpet when the logged out it puts it back.
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         MagicCarpet.carpets.drawCarpet(event.getPlayer().getName());
     }
 
-    @Override
     //When a player quits, it removes the carpet from the server
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         MagicCarpet.carpets.vanishCarpet(event.getPlayer().getName());
     }
 
-    @Override
     //When a player quits, it removes the carpet from the server
     //also, don't allow kicking for flying while descending
+    @EventHandler
     public void onPlayerKick(PlayerKickEvent event) {
         Player pl = event.getPlayer();
         Carpet carpet = (Carpet) MagicCarpet.carpets.getCarpet(pl.getName());
@@ -73,8 +76,8 @@ public class MagicPlayerListener extends PlayerListener {
         }
     }
 
-    @Override
     //Lets the carpet move with the player
+    @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Carpet carpet = (Carpet) MagicCarpet.carpets.getCarpet(player.getName());
@@ -126,7 +129,7 @@ public class MagicPlayerListener extends PlayerListener {
         }
     }
 
-    @Override
+    @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Location to = event.getTo().clone();
         Player player = event.getPlayer();
@@ -151,7 +154,7 @@ public class MagicPlayerListener extends PlayerListener {
         carpet.drawCarpet();
     }
 
-    @Override
+    @EventHandler
     public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         // Check if the player has a carpet
@@ -161,5 +164,16 @@ public class MagicPlayerListener extends PlayerListener {
             CarpetHandler.lowerCarpet(carpet);
         }
         
+    }
+	
+    //When block from a carpet is broken, don't drop free dust
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        for (Carpet carpet : MagicCarpet.carpets.getCarpets().values()) {
+            if (carpet != null && carpet.checkCarpet(event.getBlock())) {
+                event.setCancelled(true);
+                event.getBlock().setTypeId(0);
+            }
+        }
     }
 }
